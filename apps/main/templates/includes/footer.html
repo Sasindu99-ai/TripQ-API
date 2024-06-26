@@ -1,0 +1,106 @@
+{% load static %}
+{% load files %}
+<footer class="footer bg-black d-flex flex-column justify-content-center align-items-center" style="line-height: 1.5; font-weight: 300;">
+	<div class="container d-flex flex-column flex-md-row mt-4 w-100 mb-3 mx-auto mx-md-0">
+		<div class="d-flex flex-column mt-5 w-100 w-md-40 align-items-center align-items-md-start">
+			<img src="{% static R.data.settings.logo %}" width="150" height="45" alt="Logo">
+			<p class="text-white mt-3" style="max-width: 300px; text-align: justify;">Our cab service offers the most dependable and comfortable rides in town. Whether you need a ride to the airport, a night out on the town, or a quick trip across town, our professional drivers will get you where you need to go safely and efficiently.</p>
+			<form action="" method="POST" class="mt-3 w-100" style="max-width: 300px;" id="subscribe-form">
+				{% csrf_token %}
+				<div class="input-group">
+					<input type="text" class="form-control" name="email" placeholder="Email Address" aria-label="Email Address" required>
+					<button class="btn btn-primary text-white border-0" type="button" name="subscribe" value="true" title="Subscribe" data-label="Subscribe" onclick="API.subscribe('subscribe-form')"><i class="ph ph-bell"></i></button>
+				</div>
+			</form>
+		</div>
+		<div class="d-flex flex-column flex-md-row justify-content-around text-white mt-5 w-100 w-md-60 text-center text-md-start">
+			<div class="d-flex flex-column mb-3">
+				<p class="fs-lg fw-bold">Our Services</p>
+				<div class="d-flex flex-column">
+					<a class="link-white" href="">cab services</a>
+					<a class="link-white" href="">car rental</a>
+					<a class="link-white" href="">wedding car</a>
+					<a class="link-white" href="">air ticketing</a>
+					<a class="link-white" href="">tours</a>
+					<a class="link-white" href="">transports</a>
+				</div>
+			</div>
+			<div class="d-flex flex-column mb-3">
+				<p class="fs-lg fw-bold">Quick Links</p>
+				<div class="d-flex flex-column">
+					<a class="link-white" href="">Refund Policy</a>
+					<a class="link-white" href="">Privacy Policy</a>
+					<a class="link-white" href="">Terms & Conditions</a>
+					<a class="link-white" href="">Driver Policy</a>
+					<a class="link-white" href="">Become a Driver</a>
+				</div>
+			</div>
+			<div class="d-flex flex-column mb-3">
+				<p class="fs-lg fw-bold">Contact Us</p>
+				<div class="d-flex flex-column">
+					<p>Wennappuwa Branch
+						<span style="font-size:0.8rem"><br> No.301, Shoping<br> Complex, Wennappuwa</span><br><br>
+					</p>
+					<p>
+						Negombo Branch<br>
+						<span style="font-size: 0.8rem;">2nd Kurana,<br>Colombo road<br>Negombo</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-white mb-4 text-center px-2">
+		Copyright © {% now "Y" %}
+		<a href="https://developer.vvecon.com/" class="link-primary"> VVECON Developers </a>.
+		All rights reserved
+	</div>
+</footer>
+<script nonce="{{ nonce }}">
+	window.ROOTPATH = "{% static '../' %}";
+	window.STATICS = "{% static '' %}";
+</script>
+{# JS #}
+{% js R.files.jQuery %}
+{% js R.files.slim %}
+{% js R.files.popper %}
+{% js R.files.bootstrap %}
+{% js R.files.bootstrapBundle %}
+{% js R.files.main %}
+{% js R.files.style %}
+{% js R.files.loader %}
+{% js R.files.models 'module' %}
+{% js R.files.api 'module' %}
+{% js R.files.util 'module' %}
+{# Plugins #}
+{% js R.files.moment %}
+{% js R.files.datePicker %}
+{% js R.files.dateRangePicker %}
+{% js R.files.steps %}
+{% js R.files.validation %}
+
+<script nonce="{{ nonce }}">
+    function onUtil(func) {
+        if (typeof UTIL !== "undefined" && UTIL !== null && UTIL !== false) {
+            func.call()
+        } else {
+            setTimeout(() => onUtil(func), 100);
+        }
+    }
+
+    MAX_ATTEMPTS = 20;
+    threads = {};
+    function thread(func, delay=100) {
+        if (func != null && typeof delay === "number") {
+            if (threads.hasOwnProperty(func)) threads[func] += 1
+            else threads[func] = 1
+            try {
+                func.call();
+            } catch (e) {
+				console.error(e); // TODO: remove on Production
+				if (threads[func] < MAX_ATTEMPTS) {
+					setTimeout(() => thread(func, delay), delay);
+				}
+			}
+        }
+    }
+</script>

@@ -1,0 +1,49 @@
+{% load static %}
+{% if R.data.navigator.enabled %}
+	{% if R.data.navigator.navType == 1 %}
+		<nav class="navbar navbar-expand-lg navbar-dark p-0">
+			<div class="container">
+				<a class="navbar-brand" href="/">
+					<img src="{% static R.data.settings.logo %}" class="mb-0 text-nowrap h-100 ratio-1x1" width="150" alt="logo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				{% with icons=True %}
+			  	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto pe-2">
+					  	<li class="nav-item scale-up-hor-left-hover {% if R.data.navigator.activeTab == 'home' %}active{% endif %}">
+							<a href="/" class="nav-link text-nowrap fw-semibold">
+								{% if icons %}<i class="ph ph-house" aria-hidden="false"></i>&nbsp;{% endif %} Home
+							</a>
+						</li>
+						<li class="nav-item {% if R.data.navigator.activeTab == 'car-rental' %}active{% endif %}">
+							<a href="{% url 'car-rental' %}" class="nav-link text-nowrap fw-semibold">
+								{% if icons %}<i class="ph ph-car" aria-hidden="false"></i>&nbsp;{% endif %} Car Rental
+							</a>
+						</li>
+						<li class="nav-item {% if R.data.navigator.activeTab == 'wedding-cars' %}active{% endif %}">
+							<a href="#" class="nav-link text-nowrap fw-semibold">
+								{% if icons %}<i class="ph ph-heart" aria-hidden="false"></i>&nbsp;{% endif %} Wedding Cars
+							</a>
+						</li>
+						<li class="nav-item {% if R.data.navigator.activeTab == 'tours' %}active{% endif %}">
+							<a href="#" class="nav-link text-nowrap fw-semibold">
+								{% if icons %}<i class="ph ph-globe-hemisphere-west" aria-hidden="false"></i>&nbsp;{% endif %} Tours
+							</a>
+						</li>
+						<li class="nav-item {% if R.data.navigator.activeTab == 'air-ticketing' %}active{% endif %}">
+							<a href="#" class="nav-link text-nowrap fw-semibold">
+								{% if icons %}<i class="ph ph-airplane-tilt" aria-hidden="false"></i>&nbsp;{% endif %} Air Ticketing
+							</a>
+						</li>
+					</ul>
+					<button class="btn btn-primary nav-item navbar-left text-nowrap text-dark fw-semibold border-0 rounded-3">
+						<i class="ph ph-phone" aria-hidden="false"></i>&nbsp; CALL NOW
+					</button>
+				</div>
+				{% endwith %}
+			</div>
+		</nav>
+	{% endif %}
+{% endif %}

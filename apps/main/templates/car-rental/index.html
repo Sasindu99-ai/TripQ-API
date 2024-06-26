@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load currency %}
+{% load util %}
+
+{% block content %}
+	<section class="container w-100 h-auto d-flex flex-column">
+		<h1 class="mx-auto mt-5" style="">Toyota Prius</h1>
+		<div class="d-flex flex-lg-row flex-column justify-content-center align-items-center gap-3 w-100">
+			<img loading="eager" class="w-100 w-lg-50" src="http://localhost/External/viptravels.lk/statics/img/light/prius.png?v=1" alt="">
+			<form id="rent-booking-form" class="wizard-form card card-body w-lg-50 w-100 justify-content-center align-items-center px-4 rounded-3 shadow-lg" action="" method="POST">
+				{% csrf_token %}
+				<h6>Booking Information</h6>
+				<fieldset>
+					<h5 class="mb-3">Book Your Car Now</h5>
+					<div class="w-100 d-flex justify-content-between mb-2">
+						<label for="pickup-date">
+							Pickup Date <span class="text-danger">*</span>
+							<input type="date" id="pickup-date" name="pickup-date" hidden>
+						</label>
+						<label for="return-date" id="return-date-label">
+							Return Date <span class="text-danger">*</span>
+							<input type="date" id="return-date" name="return-date" hidden>
+						</label>
+					</div>
+					<button type="button" id="date-range" class="btn btn-primary d-flex w-100 mb-2">
+						<i class="ph-calendar me-2"></i>
+					</button>
+					<div class="input-group d-none mb-2 flex-nowrap" id="date-container" style="width: 100% !important;">
+						<span class="input-group-text bg-primary text-light"><i class="ph-calendar"></i></span>
+						<input type="text" id="date-picker" class="form-control datepicker-input w-100" aria-label="Pickup Date">
+					</div>
+					<p id="note" class="mb-2 text-danger text-center fw-medium">Note - Minimum Rental Period 3 Days</p>
+					<div class="form-check d-block bg-primary-3 rounded-5 mb-2 d-flex w-100" style="cursor: pointer;">
+						<input type="checkbox" class="form-check-input my-2 rounded-5" id="monthly" style="margin-left: -16px;">
+						<label class="form-check-label text-muted p-2 w-100" for="monthly">Switch to monthly rental</label>
+					</div>
+					<label class="form-label w-100 mb-3" for="vehicle">
+						Preferred Vehicle <span class="text-danger">*</span>
+						<select class="form-select form-control w-100" id="vehicle" name="vehicle">
+							<option value="1" selected>Vehicle 1</option>
+							<option value="2">Vehicle 2</option>
+							<option value="3">Vehicle 3</option>
+							<option value="4">Vehicle 4</option>
+							<option value="5">Vehicle 5</option>
+						</select>
+					</label>
+					<h5 class="fw-semibold w-100 d-block mb-3">Price - 1500LKR</h5>
+				</fieldset>
+				<h6>Personal Data</h6>
+				<fieldset>
+					<label for="name" class="form-label w-100 mb-2">
+						User Name <span class="text-danger">*</span>
+						<input type="text" class="form-control w-100" id="name" name="name" placeholder="Enter Your Name" autocomplete="name" aria-autocomplete="list">
+					</label>
+					<label for="mobile" class="form-label w-100 mb-2">
+						Mobile Number <span class="text-danger">*</span>
+						<input type="text" class="form-control w-100" id="mobile" name="mobile" placeholder="Enter Your Mobile Number" autocomplete="tel">
+					</label>
+					<label for="residence" class="form-label w-100 mb-4">
+						Residence / City <span class="text-danger">*</span>
+						<input type="text" class="form-control w-100" id="residence" name="residence" placeholder="Enter Your Residence Area" autocomplete="address-level1">
+					</label>
+				</fieldset>
+			</form>
+		</div>
+	</section>
+	<section class="container w-100 d-flex flex-column">
+		<h2 class="mx-auto mb-2 mt-4" style="">Our Price List</h2>
+		<div class="col-12 row mx-auto w-100">
+			<div class="d-flex col-md-6 col-12">
+				<div class="card w-100 border-bottom border-bottom-warning border-bottom-width-5 px-2 justify-content-center bg-white text-center shadow-lg h-auto rounded-4">
+					<div class="card-header border-bottom-0 px-5 pb-0">
+						<h3 class="card-title mb-0 fw-semibold">For your Special Day</h3>
+						<hr class="bg-black border-width-2 border-black">
+					</div>
+					<div class="card-body pt-0 d-flex flex-column justify-content-center align-items-center text-center">
+						<span class="v12 fw-medium">Per Day Price - 3500LKR</span>
+						<span class="v12 fw-medium">Per Day Driving Distance - 100km</span>
+						<span class="v12 fw-medium">Price Per extra Km - 45LKR</span>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex col-md-6 col-12">
+				<div class="card w-100 border-bottom border-bottom-warning border-bottom-width-5 px-2 justify-content-center bg-white text-center shadow-lg h-auto rounded-4">
+					<div class="card-header border-bottom-0 px-5 pb-0">
+						<h3 class="card-title mb-0 fw-semibold">For your Special Day</h3>
+						<hr class="bg-black border-width-2 border-black">
+					</div>
+					<div class="card-body pt-0 d-flex flex-column justify-content-center align-items-center text-center">
+						<span class="v12 fw-medium">Per Day Price - 3500LKR</span>
+						<span class="v12 fw-medium">Per Day Driving Distance - 100km</span>
+						<span class="v12 fw-medium">Price Per extra Km - 45LKR</span>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex col-md-6 col-12">
+				<div class="card w-100 border-bottom border-bottom-warning border-bottom-width-5 px-2 justify-content-center bg-white text-center shadow-lg h-auto rounded-4">
+					<div class="card-header border-bottom-0 px-5 pb-0">
+						<h3 class="card-title mb-0 fw-semibold">For your Special Day</h3>
+						<hr class="bg-black border-width-2 border-black">
+					</div>
+					<div class="card-body pt-0 d-flex flex-column justify-content-center align-items-center text-center">
+						<span class="v12 fw-medium">Per Day Price - 3500LKR</span>
+						<span class="v12 fw-medium">Per Day Driving Distance - 100km</span>
+						<span class="v12 fw-medium">Price Per extra Km - 45LKR</span>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex col-md-6 col-12">
+				<div class="card w-100 border-bottom border-bottom-warning border-bottom-width-5 px-2 justify-content-center bg-white text-center shadow-lg h-auto rounded-4">
+					<div class="card-header border-bottom-0 px-5 pb-0">
+						<h3 class="card-title mb-0 fw-semibold">For your Special Day</h3>
+						<hr class="bg-black border-width-2 border-black">
+					</div>
+					<div class="card-body pt-0 d-flex flex-column justify-content-center align-items-center text-center">
+						<span class="v12 fw-medium">Per Day Price - 3500LKR</span>
+						<span class="v12 fw-medium">Per Day Driving Distance - 100km</span>
+						<span class="v12 fw-medium">Price Per extra Km - 45LKR</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="container w-100">
+		<div class="breadcrumb breadcrumb-arrows my-4" style="font-size: 20px;">
+			<a href="/" class="breadcrumb-item py-2"><i class="ph-house"></i>&nbsp;Home</a>
+			<a href="{% url "car-rental" %}" class="breadcrumb-item py-2">Car Rental</a>
+			<span class="breadcrumb-item active py-2">Toyota Prius</span>
+		</div>
+		<div id="vehicle-models" class="col-12 row mx-auto" style="line-height: unset !important;">
+			{% for vehicleModel in vehicles %}
+				<div class="d-flex col-lg-3 col-md-4 col-sm-6 col-12 scale-in-center" id="vehicle-model-{{ vehicleModel.id }}">
+					<div class='mx-auto card card-body justify-content-center bg-white text-center shadow-lg h-auto rounded-3 p-0' style="max-width: 260px;">
+						<img {% if forloop.counter > 8 %}loading="lazy"{% endif %} src='{{ vehicleModel.images.first.image.url }}' alt='' class='w-100 rounded img-cover' height="150" width="260" style="height: 150px; object-fit: cover;">
+						<div class='d-flex flex-column justify-content-center align-items-center p-3'>
+							<h5 class='card-title mb-0 text-nowrap text-truncate' title="{{ vehicleModel.brand.brand }} {{ vehicleModel.model }}" style="max-width: 200px;">{{ vehicleModel.brand.brand }} {{ vehicleModel.model }}</h5>
+							<p class='my-0 mb-1' style="margin-top: -0px !important;">{{ vehicleModel.rent_fare.daily_fare_1 | currency_format }} /<span class='v14'> day</span><br>{{ vehicleModel.rent_fare.monthly_fare | currency_format }} /<span class='v14'> month</span></p>
+							<span class='v14 mb-3'>0 vehicles available</span>
+							<a class='btn btn-warning text-white fw-semibold rounded-3 v14' href="{% url 'car-rental/index' vehicleModelName=vehicleModel.brand.brand|add:' '|add:vehicleModel.model|split:' '|join:'-' vehicleModelId=vehicleModel.id %}">View All Cars</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	<script type="module" nonce="{{ nonce }}">
+		document.addEventListener('DOMContentLoaded', () => {
+			window.monthly = false;
+
+			onUtil(() => {
+				thread(() => {
+					window.stepsForm = new UTIL.Steps("rent-booking-form", {
+            			headerTag: 'h6',
+            			bodyTag: 'fieldset',
+            			titleTemplate: '<span class="number">#index#</span> #title#',
+            			labels: {
+                			previous: document.dir === 'rtl' ? '<i class="ph-arrow-circle-right me-2"></i> Previous' : '<i class="ph-arrow-circle-left me-2"></i> Previous',
+                			next: document.dir === 'rtl' ? 'Next <i class="ph-arrow-circle-left ms-2"></i>' : 'Next <i class="ph-arrow-circle-right ms-2"></i>',
+                			finish: 'Book Now'
+            			},
+						transitionEffect: "slideLeft",
+            			autoFocus: true,
+            			onStepChanging: function (event, currentIndex, newIndex) {
+							if (currentIndex > newIndex) {
+								return true;
+							}
+							if (currentIndex < newIndex) {
+								window.stepsForm.show().find('.body:eq(' + newIndex + ') label.error').remove();
+								window.stepsForm.show().find('.body:eq(' + newIndex + ') .error').removeClass('error');
+							}
+							window.stepsForm.show().validate().settings.ignore = ':disabled,:hidden';
+							return window.stepsForm.show().valid();
+						},
+						onFinishing: function (event, currentIndex) {
+							window.stepsForm.show().validate().settings.ignore = ':disabled';
+							return window.stepsForm.show().valid();
+						},
+						onFinished: function (event, currentIndex) {
+							alert('Submitted!');
+						}
+					}, {
+						ignore: 'input[type=hidden], .select2-search__field',
+						errorClass: 'validation-invalid-label',
+						highlight: function(element, errorClass) {
+							$(element).removeClass(errorClass);
+						},
+						unhighlight: function(element, errorClass) {
+							$(element).removeClass(errorClass);
+						},
+						errorPlacement: function(error, element) {
+							if (element.hasClass('select2-hidden-accessible')) {
+								error.appendTo(element.parent());
+							}
+							else if (element.parents().hasClass('form-control-feedback') || element.parents().hasClass('form-check') || element.parents().hasClass('input-group')) {
+								error.appendTo(element.parent().parent());
+							}
+							else {
+								error.insertAfter(element);
+							}
+						},
+						rules: {
+							name: {
+								required: true,
+								minlength: 2
+							},
+							mobile: {
+								required: true,
+								minlength: 7,
+								maxlength: 40
+							},
+							residence: {
+								required: true,
+								minlength: 2
+							}
+						},
+					});
+				});
+				thread(() => {
+					window.dateRange = new UTIL.DateRangePicker("date-range", {
+						startDate: moment(),
+						endDate: moment().add(3, 'days'),
+						minDate: moment(),
+						maxDate: moment().add(2, 'years'),
+						dateLimit: {years: 2},
+						opens: document.dir === 'rtl' ? 'right' : 'left',
+						parentEl: 'main'
+					}, (start, end) => {
+						if (!monthly) {
+							$('#date-range').html(
+								'<i class="ph-calendar me-2"></i><span>' +
+								start.format('MMMM D, YYYY') + ' &nbsp; - &nbsp; ' + end.format('MMMM D, YYYY') +
+								'</span>'
+							);
+							$('#date-picker').val(start.format('MM/DD/YYYY'));
+							$('#pickup-date').val(start.format('MM/DD/YYYY'));
+							$('#return-date').val(end.format('MM/DD/YYYY'));
+						}
+					});
+				});
+				thread(() => {
+					window.dateInput = new UTIL.DatePicker("date-picker", {
+						container: 'main',
+						buttonClass: 'btn',
+						prevArrow: document.dir === 'rtl' ? '&rarr;' : '&larr;',
+						nextArrow: document.dir === 'rtl' ? '&larr;' : '&rarr;',
+						autohide: true,
+						minDate: moment().format('MM/DD/YYYY'),
+						maxDate: moment().add(2, 'years').format('MM/DD/YYYY'),
+					}, (date) => {
+						if (monthly) {
+							date = moment(date).add(1, 'days');
+							$('#date-range').html(
+								'<i class="ph-calendar me-2"></i><span>' +
+								date.format('MMMM D, YYYY') + ' &nbsp; - &nbsp; ' + (date.add(30, 'days')).format('MMMM D, YYYY') +
+								'</span>'
+							);
+							try {
+								dateRange.picker.setRange(date, date.add(30, 'days'));
+							} catch (e) {
+							}
+							$('#date-picker').val(date.format('MM/DD/YYYY'));
+							$('#pickup-date').val(date.format('MM/DD/YYYY'));
+							$('#return-date').val(date.add(30, 'days').format('MM/DD/YYYY'));
+						}
+					});
+				});
+				thread(() => {
+					$('#date-range').html(
+						'<i class="ph-calendar me-2"></i><span>' +
+						moment().format('MMMM D, YYYY') + ' &nbsp; - &nbsp; ' + (moment().add(3, 'days')).format('MMMM D, YYYY') +
+						'</span>'
+					);
+					$('#date-picker').val(moment().format('MM/DD/YYYY'));
+					$('#pickup-date').val(moment().format('MM/DD/YYYY'));
+					$('#return-date').val(moment().add(3, 'days').format('MM/DD/YYYY'));
+
+					setTimeout(() => {
+						$("#monthly")[0].onchange = (event) => {
+							let dateRangeElement = document.querySelector('#date-range');
+							let datePickerElement = document.querySelector('#date-picker');
+							let pickupDateElement = document.querySelector('#pickup-date');
+							let returnDateElement = document.querySelector('#return-date');
+							let dateContainerElement = document.querySelector('#date-container');
+							let returnDateLabel = document.querySelector('#return-date-label');
+							window.monthly = !window.monthly;
+							dateRangeElement.classList.toggle('d-none');
+							dateContainerElement.classList.toggle('d-none');
+							dateRangeElement.classList.toggle('d-flex');
+							dateContainerElement.classList.toggle('d-flex');
+							returnDateLabel.classList.toggle('d-none');
+							document.getElementById("note").classList.toggle('d-none');
+							if (window.monthly) {
+								datePickerElement.value = moment().format('MM/DD/YYYY');
+								pickupDateElement.value = moment().format('MM/DD/YYYY');
+								returnDateElement.value = moment().add(30, 'days').format('MM/DD/YYYY');
+							} else {
+								dateRangeElement.innerHTML = '<i class="ph-calendar me-2"></i><span>' + moment().format('MMMM D, YYYY') + ' &nbsp; - &nbsp; ' + (moment().add(3, 'days')).format('MMMM D, YYYY') + '</span>';
+								datePickerElement.value = moment().format('MM/DD/YYYY');
+								pickupDateElement.value = moment().format('MM/DD/YYYY');
+								returnDateElement.value = moment().add(3, 'days').format('MM/DD/YYYY');
+							}
+						}
+					}, 100);
+				});
+			});
+		});
+	</script>
+{% endblock %}

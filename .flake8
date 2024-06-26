@@ -1,0 +1,19 @@
+[flake8]
+ignore = W503, W504, W191, C101, I100, E126, I201, F401,F403, I101, E131, B023
+exclude =
+    **/migrations/*,
+    */templatetags/__init__.py,
+    .git,
+    .mypy_cache,
+    __pycache__,
+    venv,
+    vvecon,
+filename = *.py
+accept-encodings = utf-8
+inline-quotes = single
+max-complexity = 12
+max-linenumber = 500
+max-line-length = 119
+multiline-quotes = double
+per-file-ignores =
+    core/settings.py: E501

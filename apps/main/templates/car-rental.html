@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load currency %}
+{% load util %}
+
+{% block css %}
+	{{ block.super }}
+	<style>
+		/* Hidden state with transition */
+		.d-none {
+			opacity: 0;
+			transform: translate(-100%, -100%);
+			transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+		}
+
+		/* Visible state with transition */
+		.d-flex {
+			opacity: 1;
+			transform: translate(0, 0);
+			transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+		}
+
+		#vehicle-models {
+			display: flex;
+			position: relative; /* For positioning the elements relative to the container */
+			transition: all 0.5s ease-in-out;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<section class="container d-flex flex-column">
+		<div class="d-flex flex-column-reverse flex-lg-row justify-content-between align-items-center align-items-lg-start mb-4 mt-4 w-100 px-2">
+			<ul class="nav nav-pills d-inline-flex rounded border ps-1 pe-1 gap-1 animated-pill mt-4 justify-content-center">
+				<li class="nav-item">
+					<button class="btn nav-link animated-pil-item rounded active" data-value="0">All</button>
+					<div class="animated-pill-active rounded"></div>
+				</li>
+				{% for rentPackage in rentPackages %}
+					<li class="nav-item">
+						<button class="btn nav-link animated-pil-item rounded" data-value="{{ rentPackage.id }}">{{ rentPackage.package }}</button>
+					</li>
+				{% endfor %}
+			</ul>
+			<input type="search" name="search" aria-label="Search" class="form-control bg-transparent text-muted mt-4 w-100 w-lg-30 wmax-300" placeholder="Search Here">
+		</div>
+		<div id="vehicle-models" class="col-12 row mx-auto" style="line-height: unset !important;">
+			{% for vehicleModel in vehicleModels %}
+				<div class="d-flex col-lg-3 col-md-4 col-sm-6 col-12 scale-in-center" id="vehicle-model-{{ vehicleModel.id }}">
+					<div class='mx-auto card card-body justify-content-center bg-white text-center shadow-lg h-auto rounded-3 p-0' style="max-width: 260px;">
+						<img {% if forloop.counter > 8 %}loading="lazy"{% endif %} src='{{ vehicleModel.images.first.image.url }}' alt='' class='w-100 rounded img-cover' height="150" width="260" style="height: 150px; object-fit: cover;">
+						<div class='d-flex flex-column justify-content-center align-items-center p-3'>
+							<h5 class='card-title mb-0 text-nowrap text-truncate' title="{{ vehicleModel.brand.brand }} {{ vehicleModel.model }}" style="max-width: 200px;">{{ vehicleModel.brand.brand }} {{ vehicleModel.model }}</h5>
+							<p class='my-0 mb-1' style="margin-top: -0px !important;">{{ vehicleModel.rent_fare.daily_fare_1 | currency_format }} /<span class='v14'> day</span><br>{{ vehicleModel.rent_fare.monthly_fare | currency_format }} /<span class='v14'> month</span></p>
+							<span class='v14 mb-3'>0 vehicles available</span>
+							<a class='btn btn-warning text-white fw-semibold rounded-3 v14' href="{% url 'car-rental/index' vehicleModelName=vehicleModel.brand.brand|add:' '|add:vehicleModel.model|split:' '|join:'-' vehicleModelId=vehicleModel.id %}">View All Cars</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+	<script nonce="{{ nonce }}">
+		document.addEventListener('DOMContentLoaded', function() {
+			animatePills();
+
+			let None = null;
+			let True = true;
+			let False = false;
+			const vehicleModelElements = document.querySelector('#vehicle-models').children;
+			const vehicleModelsData = {{ vehicleModels|jsonify|safe }};
+			const vehicleModels = vehicleModelsData.map(vehicleModel => ({
+				id: vehicleModel.pk,
+				...vehicleModel.fields
+			}));
+			let introAnimation = 'scale-in-center';
+			let outroAnimation = 'scale-out-center';
+			const searchInput = document.querySelector('input[name="search"]');
+			let searchValue = searchInput.value.toLowerCase().trim();
+
+			function getVehicleModelById(vehicleModelId) {
+				return vehicleModels.find(vehicleModel => vehicleModel.id === parseInt(vehicleModelId));
+			}
+
+			function updateVehicleModels() {
+				const animatedPillActive = document.querySelector('.animated-pil-item.active');
+				for (let i = 0; i < vehicleModelElements.length; i++) {
+					const vehicleModelElement = vehicleModelElements[i];
+					if (vehicleModelElement.classList.contains(introAnimation)) vehicleModelElement.classList.remove(introAnimation);
+					if (!vehicleModelElement.classList.contains(outroAnimation)) vehicleModelElement.classList.add(outroAnimation);
+					if (vehicleModelElement.classList.contains('d-flex')) vehicleModelElement.classList.remove('d-flex');
+					setTimeout(() => {
+						if (!vehicleModelElement.classList.contains('d-none')) vehicleModelElement.classList.add('d-none');
+						if (vehicleModelElement.classList.contains(outroAnimation)) vehicleModelElement.classList.remove(outroAnimation);
+						if (!vehicleModelElement.classList.contains(introAnimation)) vehicleModelElement.classList.add(introAnimation);
+					}, 500);
+				}
+				setTimeout(() => {
+					for (let i = 0; i < vehicleModelElements.length; i++) {
+						const vehicleModelElement = vehicleModelElements[i];
+						const vehicleModel = getVehicleModelById(vehicleModelElement.id.split('-')[2]);
+						const activePackage = parseInt(animatedPillActive.getAttribute('data-value'));
+						if ((vehicleModel.rentPackage === activePackage || activePackage === 0) && vehicleModelElement.classList.contains('d-none') && (vehicleModelElement.querySelector('h5').textContent.toLowerCase().includes(searchValue) || searchValue === '')) {
+							if (vehicleModelElement.classList.contains(outroAnimation)) vehicleModelElement.classList.remove(outroAnimation);
+							if (!vehicleModelElement.classList.contains(introAnimation)) vehicleModelElement.classList.add(introAnimation);
+							if (vehicleModelElement.classList.contains('d-none')) vehicleModelElement.classList.remove('d-none');
+							if (!vehicleModelElement.classList.contains('d-flex')) vehicleModelElement.classList.add('d-flex');
+						}
+					}
+				}, 500);
+			}
+
+			const animatedPill = document.querySelectorAll('.animated-pil-item');
+			animatedPill.forEach((pill) => {
+				pill.addEventListener('click', function() {
+					setTimeout(() => {
+						updateVehicleModels();
+					}, 100);
+				});
+			});
+
+			searchInput.addEventListener('input', function() {
+				searchValue = searchInput.value.toLowerCase().trim();
+				updateVehicleModels();
+			});
+
+			searchInput.addEventListener('keypress', function(event) {
+				if (event.key === 'Enter') {
+					searchValue = searchInput.value.toLowerCase().trim();
+					updateVehicleModels();
+				}
+			});
+
+			setTimeout(() => {
+				searchValue = searchInput.value.toLowerCase().trim();
+				updateVehicleModels();
+			}, 100);
+		});
+	</script>
+{% endblock %}
